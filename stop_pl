@@ -1,0 +1,10 @@
+#!/bin/bash
+
+for i in {01..76}
+do
+    echo "" > stop/ora_m$i
+done
+
+echo "" > stop/ora_dis
+
+exit 0
