@@ -1,0 +1,59 @@
+﻿#!/bin/bash
+################################################################################
+#Скриптик, который следит за тем, чтобывсе скрипты были запущены. Запускает
+#скрипты, если не запущены.
+################################################################################
+somefoler="";
+
+#Проверим, запущено ли.
+if [ -s "/$somefolder/d/to_ora_watcher.pid" ]
+then
+    var0=0
+else
+    touch "/$somefolder/d/to_ora_watcher.pid"
+    echo "9999999999" > "/$somefolder/d/to_ora_watcher.pid"
+fi
+if [ $(pidof sh | grep $(cat "/$somefolder/d/to_ora_watcher.pid") | wc -l) == "1" ]
+then
+    date +%d/%m/%y-%T >> log/while.log;
+    echo "Уже запущено. Fail!" >> log/while.log;
+    exit
+else
+    date +%d/%m/%y-%T >> log/while.log;
+    echo "Всё нормально. All right. Run." >> log/while.log;
+    echo $$ > "/$somefolder/d/to_ora_watcher.pid"
+fi
+#----------------------
+logfile="/$somefolder/to_ora/log/to_ora_watcher.log"
+var0=0
+
+while [ $var0 -eq "0" ]
+do
+    echo "$(date +%d/%m/%y-%T)" >> "$logfile"
+    #---------------
+    cd "/$somefolder/d" 2> /dev/null
+
+    for A in $(find * -maxdepth 0 -type f 2> /dev/null | grep -i "to_ora_" | grep -i -v "watcher")
+    do
+	#echo "$A"
+	if [ "$(ps -eo pid,etime,command | grep '.[/]to_ora' | grep -i -v "watcher" | grep -w "$(cat "$A")")" = "" ]
+	then
+	    echo "$(date +%d/%m/%y-%T) Bad((( $A not runing..." >> "$logfile"
+	    #rm -f "$A"
+	    B=$(echo $A | sed 's/.pid//' | sed 's/to_ora_//')
+	    cd "/$somefolder/to_ora"
+	    ./gather_to_oracle.pl $B &>> log/to_ora_m"$B".log &
+	    echo "$B started." >> "$logfile"
+	    cd "/$somefolder/d" 2> /dev/null
+	    sleep 10
+	else
+	    var0=0
+	fi
+
+    done
+    cd "/$somefolder/to_ora"
+    #---------------
+    sleep 301
+done
+
+exit 0
