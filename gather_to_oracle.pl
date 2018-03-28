@@ -24,30 +24,30 @@ my $version = "1.18.3";
 my $nomer = $ARGV[0];
 my $nomer1 = $ARGV[0]-0;
 if ($nomer == "00"){$nomer1 = $ARGV[0];}
-my $stopfile="/windows/u/Domino8/mail/PLAN_Lin/to_ora/stop/to_ora_m$nomer";
+my $stopfile="to_ora/stop/to_ora_m$nomer";
 my $str_r;
 my $r_path='';
 my $path='';
 my $rpath='';
 if ($nomer != 00){
-  $r_path='/windows/w/MAIL/FROM_KAS/000';
+  $r_path='Infolder_000';
   $path=$r_path . $nomer;
   $rpath=dir("$r_path" . "$nomer");
 }
 else {
-  $r_path='/windows/w/MAIL/FROM_KAS/';
+  $r_path='In_folder';
   $path=$r_path;
   $rpath=dir("$r_path");
 }
 
-my $dirw = dir("/windows/w/");
-my $diru = dir("/windows/u/");
+my $dirw = dir("w/");
+my $diru = dir("u/");
 my $filew = $dirw->file("u_o_" . $nomer1 . "_pl.test");
 my $fileu = $diru->file("w_o_" . $nomer1 . "_pl.test");
 my $db;
 my $fail=0;
 my $tolog='';
-my $path_d="/windows/u/Domino8/mail/PLAN_Lin/d/to_ora";
+my $path_d="to_ora";
 my $line;
 
 my ($nal, $s_nal, $beznal, $s_beznal, $summ, $pay, $diss, $card) = 0;
@@ -107,7 +107,7 @@ sub print_to_daylylog{
     my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = localtime();
     $mon=$mon+1;
     $year=$year+1900;
-    my $dlog_file='/windows/temp/scripts/to_ora/R/'.'R_m'.$nomer.'.log';
+    my $dlog_file='to_ora/R/'.'R_m'.$nomer.'.log';
     open (my $dlog, '>>', $dlog_file);
     print $dlog "$tolog";
     close $dlog;
